@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <!-- Twitter bootstrap -->
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- apiCheck is used by formly to validate its api -->
+    <script src="http://cdn.bootcss.com/api-check/7.5.0/api-check.min.js"></script>
+    <!-- This is the latest version of angular (at the time this template was created) -->
+    <script src="http://cdn.bootcss.com/angular.js/1.4.6/angular.min.js"></script>
+
+    <!-- This is the latest version of formly core. -->
+    <script src="http://cdn.bootcss.com/angular-formly/7.3.2/formly.min.js"></script>
+    <!-- This is the latest version of formly bootstrap templates -->
+    <script src="http://cdn.bootcss.com/angular-formly-templates-bootstrap/6.1.5/angular-formly-templates-bootstrap.min.js"></script>
+
+      <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
+      
+      <!-- ui-select files -->
+    <script src="http://cdn.bootcss.com/angular-ui-select/0.16.0/select.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/angular-ui-select/0.16.0/select.min.css">
+    <script src="http://cdn.bootcss.com/angular.js/1.4.6/angular-sanitize.min.js"></script>
+      
+    <title>Angular Formly Example</title>
+  </head>
+
+  <body ng-app="formlyExample" ng-controller="MainCtrl">
+    <div>
+      <form ng-submit="vm.search()" novalidate>
+        <formly-form model="vm.model" fields="vm.fields" form="vm.form">
+          <button type="submit" class="btn btn-primary submit-button">Submit</button>
+        </formly-form>
+      </form>
+      
+    </div>
+<div>{{vm.model.date1}}</div>
+      </br>
+    <div>{{vm.model}}</div>
+    
+  </body>
+<script>
+	/* global angular */
+(function() {
+
+  'use strict';
+
+  var app = angular.module('formlyExample', ['formly', 'formlyBootstrap', 'ui.bootstrap', 'ngSanitize', 'ui.select']);
+
+    app.run(function(formlyConfig) {
+    // NOTE: This next line is highly recommended. Otherwise Chrome's autocomplete will appear over your options!
+    formlyConfig.extras.removeChromeAutoComplete = true;
+    formlyConfig.setType({
+      name: 'async-ui-select',
+      extends: 'select',
+      template: '<ui-select ng-model="model[options.key]" theme="bootstrap" ng-required="{{to.required}}" ng-disabled="{{to.disabled}}" reset-search-input="false"> <ui-select-match placeholder="{{to.placeholder}}"> {{$select.selected[to.labelProp || \'name\']}} </ui-select-match> <ui-select-choices group-by="to.groupBy" repeat="option[to.valueProp || \'value\'] as option in to.options | filter: $select.search"  refresh="to.refresh($select.search, options)" refresh-delay="{{to.refreshDelay}}"> <div ng-bind-html="option[to.labelProp || \'name\'] | highlight: $select.search"></div> </ui-select-choices> </ui-select>'
+    });
+
+formlyConfig.setType({
+      name: 'ui-select',
+      extends: 'select',
+      template: '<ui-select data-ng-model="model[options.key]" data-required="{{to.required}}" data-disabled="{{to.disabled}}" theme="bootstrap"><ui-select-match placeholder="{{to.placeholder}}" data-allow-clear="false">{{$select.selected[to.labelProp || \'name\']}}</ui-select-match><ui-select-choices data-repeat="option[to.valueProp || \'value\'] as option in to.options | filter: $select.search"><div ng-bind-html="option[to.labelProp || \'value\'] | highlight: $select.search"></div></ui-select-choices></ui-select>'
+    });        
+       
+formlyConfig.setType({
+      name: 'ui-select-search',
+      extends: 'select',
+      template: '<ui-select data-ng-model="model[options.key]" data-required="{{to.required}}" data-disabled="{{to.disabled}}" theme="bootstrap"><ui-select-match placeholder="{{to.placeholder}}">{{$select.selected[to.labelProp || "name"]}}</ui-select-match><ui-select-choices data-repeat="{{to.ngOptions}}" data-refresh="to.refresh($select.search, options)" data-refresh-delay="{{to.refreshDelay}}"><div ng-bind-html="option[to.labelProp || \'name\'] | highlight: $select.search"></div><div></ui-select-choices></ui-select>'
+    });        
+
+var attributes = [
+    'date-disabled',
+    'custom-class',
+    'show-weeks',
+    'starting-day',
+    'init-date',
+    'min-mode',
+    'max-mode',
+    'format-day',
+    'format-month',
+    'format-year',
+    'format-day-header',
+    'format-day-title',
+    'format-month-title',
+    'year-range',
+    'shortcut-propagation',
+    'datepicker-popup',
+    'show-button-bar',
+    'current-text',
+    'clear-text',
+    'close-text',
+    'close-on-date-selection',
+    'datepicker-append-to-body'
+  ];
+
+  var bindings = [
+    'datepicker-mode',
+    'min-date',
+    'max-date'
+  ];
+
+  var ngModelAttrs = {};
+
+  angular.forEach(attributes, function(attr) {
+    ngModelAttrs[camelize(attr)] = {attribute: attr};
+  });
+
+  angular.forEach(bindings, function(binding) {
+    ngModelAttrs[camelize(binding)] = {bound: binding};
+  });
+
+  console.log(ngModelAttrs);
+  
+  formlyConfig.setType({
+    name: 'datepicker',
+    template:  '<p class="input-group"><input  type="text" id="{{::id}}" name="{{::id}}" ng-model="model[options.key]" class="form-control" ng-click="datepicker.open($event)" uib-datepicker-popup="{{to.datepickerOptions.format}}" is-open="datepicker.opened" datepicker-options="to.datepickerOptions" /><span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="datepicker.open($event)" ng-disabled="to.disabled"><i class="glyphicon glyphicon-calendar"></i></button></span></p>',
+    wrapper: ['bootstrapLabel', 'bootstrapHasError'],
+    defaultOptions: {
+      ngModelAttrs: ngModelAttrs,
+      templateOptions: {
+        datepickerOptions: {
+          format: 'MM.dd.yyyy',
+          initDate: new Date()
+        }
+      }
+    },
+    controller: ['$scope', function ($scope) {
+      $scope.datepicker = {};
+
+      $scope.datepicker.opened = false;
+
+      $scope.datepicker.open = function ($event) {
+        $scope.datepicker.opened = !$scope.datepicker.opened;
+      };
+    }]
+  });
+
+  function camelize(string) {
+    string = string.replace(/[\-_\s]+(.)?/g, function(match, chr) {
+      return chr ? chr.toUpperCase() : '';
+    });
+    // Ensure 1st char is always lowercase
+    return string.replace(/^([A-Z])/, function(match, chr) {
+      return chr ? chr.toLowerCase() : '';
+    });
+  }        
+        
+        
+  });
+    
+
+ 
+    
+    
+  app.controller('MainCtrl', function MainCtrl(formlyVersion,$scope,$q,$http) {
+      
+    var vm = {};
+      $scope.vm=vm;
+    // funcation assignment
+    vm.search = function(){
+          console.log('............');
+      };
+    vm.model = {};
+
+    vm.fields =  [
+      {
+        className: 'row',
+        fieldGroup: [
+          {
+            className: 'col-xs-2',
+            type: 'input',
+            key: 'firstName',
+            templateOptions: {
+              label: 'First Name',
+                addonLeft: {
+                    class: 'glyphicon glyphicon-euro',
+                    text: 'name'
+                  },
+            }
+          },
+          {
+            className: 'col-xs-2',
+            type: 'input',
+            key: 'lastName',
+            templateOptions: {
+              label: 'Last Name'
+            },
+            expressionProperties: {
+              'templateOptions.disabled': '!model.firstName'
+            }
+          },
+          {
+              className: 'col-xs-2',
+            key: 'marvel1',
+            type: 'select',
+            templateOptions: {
+              label: 'Normal Select',
+              options: [
+                {name: 'Iron Man', value: 'iron_man'},
+                {name: 'Captain America', value: 'captain_america'},
+                {name: 'Black Widow', value: 'black_widow'},
+                {name: 'Hulk', value: 'hulk'},
+                {name: 'Captain Marvel', value: 'captain_marvel'}
+              ]
+            }
+          },
+         {
+             className: 'col-xs-2',
+        key: 'singleOption',
+        type: 'ui-select',
+        templateOptions: {
+          optionsAttr: 'bs-options',
+          //ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
+          label: 'Single Select',
+          //valueProp: 'value',
+          //labelProp: 'name',
+          placeholder: 'Select option',
+          description: 'Template includes the allow-clear option on the ui-select-match element',
+          options: [
+                {name: 'Iron Man', value: 'iron_man'},
+                {name: 'Captain America', value: 'captain_america'},
+                {name: 'Black Widow', value: 'black_widow'},
+                {name: 'Hulk', value: 'hulk'},
+                {name: 'Captain Marvel', value: 'captain_marvel'}
+              ]
+        }
+      }
+        ]
+      },
+      {
+        className: 'row',
+        fieldGroup: [
+          {
+              className: 'col-xs-2',
+            key: 'aysselect',
+            type: 'ui-select-search',
+            templateOptions: {
+              optionsAttr: 'bs-options',
+              ngOptions: 'option[to.valueProp || "value"] as option in to.options | filter: $select.search',
+              label: 'Async Search',
+              //valueProp: 'value',
+              //labelProp: 'name',
+              placeholder: 'Search',
+              options: [],
+              refresh: refreshData,
+              refreshDelay: 0
+            }
+          },
+          {
+              className: 'col-xs-2',
+            key: 'date1',
+            type: 'datepicker',
+            templateOptions: {
+              label: 'Date 1',
+              type: 'text',
+            placeholder: '起始日期',
+              datepickerPopup: 'yyyy-MM-dd',
+              //this houdl override datepicker format on formlyConfig and it did
+              datepickerOptions: {
+                format: 'yyyyMMdd'
+              }
+                }
+              },
+                {
+                 template : '<div>{{date1}}</div>'
+              }
+        ]
+      },{
+        type: 'input',
+        key: 'otherInput',
+        templateOptions: {
+          label: 'Other Input'
+        }
+      },
+      {
+        type: 'checkbox',
+        key: 'otherToo',
+        templateOptions: {
+          label: 'Other Checkbox'
+        }
+      }
+    ];
+
+      
+      //远程例子
+    function refreshAddresses(address, field) {
+      var promise;
+      if (!address) {
+        promise = $q.when({data: {results: []}});
+      } else {
+        var params = {address: address, sensor: false};
+        var endpoint = '//maps.googleapis.com/maps/api/geocode/json';
+        promise = $http.get(endpoint, {params: params});
+      }
+      return promise.then(function(response) {
+        field.templateOptions.options = response.data.results;
+      });
+    }  
+      
+    function refreshData(searchText, field) {
+      var promise;
+      
+        promise = $http.get('data.json');
+     
+      return promise.then(function(response) {
+          console.log(response);
+        field.templateOptions.options = response.data;
+      });
+    }    
+      
+    
+    // function definition
+    function onSubmit() {
+      alert(JSON.stringify(vm.model), null, 2);
+    }
+      
+      //$scope.vm.model.date1 = '2015-12-11';
+      $scope.vm.model.aysselect = 'dsfsdfsd3';
+  });
+
+})();
+</script>
+
+</html>

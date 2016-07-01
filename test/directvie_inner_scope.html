@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>测试directive内部scope和外部scope的互相影响</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body ng-app="myApp">
+	<p></p>
+	<div ng-controller='MainController' ng-init="myProperty='Hello World!'">
+        外部: {{ myProperty}}
+        <input ng-model="myProperty"/>
+		内部: {{ spContent}}
+        <div my-directive on-click="oon" content="dsfsdfsdjflksjdflksdlk" ng-model="spContent" ></div>
+    </div>
+
+    <script src="http://cdn.bootcss.com/angular.js/1.3.8/angular.min.js"></script>
+    
+    <script>
+        angular.module('myApp', [])
+        .controller('MainController', function ($scope) {
+			$scope.oon = function(){
+				console.log('1111111111 oon');
+			}
+			$scope.spContent = 'zzzzzzzzzzzz';
+        })
+        .directive('myDirective', function () {
+            return {
+                restrict: 'A',
+				require: 'ngModel', 
+                scope:{
+					'ngModel': '='
+				},//切换为{}，true, false测试
+                priority: 100,
+                template: '<div>内部:{{ ngModel }}<input ng-model="ngModel" /></div>',
+				controller: function($scope) {
+					console.log('controller function runing...');
+					console.log($scope.ngModel);
+					$scope.oo = function(){
+						console.log('22222222222222222 oon');
+					}
+				},
+				link: function(scope, iElement, iAttrs, controller) {
+					console.log('link function runing...');
+					
+				}
+            };
+        });
+    </script>
+</body>
+</html>

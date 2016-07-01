@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>dirctive例子 - accordion</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
+    <link href="AdminLTE.css" rel="stylesheet">
+
+    <script src="http://cdn.bootcss.com/angular.js/1.3.12/angular.min.js"></script>
+    <script src="demoCtrl.js"></script>
+    <style type="text/css">
+        .expander {
+            border: 1px solid black;
+            width: 250px;
+        }
+
+        .expander>.title {
+            background-color: black;
+            color: white;
+            padding: .1em .3em;
+            cursor: pointer;
+        }
+
+        .expander>.body {
+            padding: .1em .3em;
+        }
+    </style>
+</head>
+<body ng-app="expanderModule"  ng-controller='demoController'>
+
+<!--<div class=" ng-scope">
+<section class="sidebar">
+<ul class="sidebar-menu">
+    <li  ui-sref-active="active" class="ng-scope">
+        <a class="ng-binding" href="#/app" ui-sref="app.home"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+    </li>
+    <li  ui-sref-active="active" class="ng-scope active">
+        <a class="ng-binding" href="#/app/events" ui-sref="app.events.list"><i class="fa fa-fw fa-calendar-o"></i> Events</a>
+    </li><li  ui-sref-active="active" class="ng-scope">
+    <a class="ng-binding" href="#/app/files" ui-sref="app.files.list"><i class="fa fa-fw fa-file"></i> Files</a>
+</li><li  ui-sref-active="active" class="ng-scope">
+    <a class="ng-binding" href="#/app/notes" ui-sref="app.notes.list"><i class="fa fa-fw fa-file-o"></i> Notes</a>
+</li><li  ui-sref-active="active" class="ng-scope">
+    <a class="ng-binding" href="#/app/pages" ui-sref="app.pages.list"><i class="fa fa-fw fa-file-o"></i> Pages</a>
+</li><li  ui-sref-active="active" class="ng-scope">
+    <a class="ng-binding" href="#/app/posts" ui-sref="app.posts.list"><i class="fa fa-fw fa-edit"></i> Posts</a>
+</li><li  ui-sref-active="active" class="ng-scope">
+    <a class="ng-binding" href="#/app/products" ui-sref="app.products.list"><i class="fa fa-fw fa-file"></i> Products</a>
+</li><li  ui-sref-active="active" class="ng-scope">
+    <a class="ng-binding" href="#/app/sandbox" ui-sref="app.sandbox.index"><i class="fa fa-fw fa-inbox"></i> Sandbox</a>
+</li><li  ui-sref-active="active" class="ng-scope">
+    <a class="ng-binding" href="#/app/settings" ui-sref="app.settings.list"><i class="fa fa-fw fa-cog"></i> Settings</a>
+</li><li  ui-sref-active="active" class="ng-scope">
+    <a class="ng-binding" href="#/app/users" ui-sref="app.users.list"><i class="fa fa-fw fa-user"></i> Users</a>
+</li>
+</ul>
+</section>
+    </div>-->
+<!--<submenu menu="userMenu"></submenu>-->
+
+
+
+<div class=" ng-scope">
+    <sidebarmenu menus="rootmenu" ></sidebarmenu>
+</div>
+
+
+</body>
+</html>

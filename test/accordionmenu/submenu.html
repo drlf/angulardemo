@@ -1,0 +1,11 @@
+<div>
+    <a ng-if="menu.isLeaf" class="" href="" ui-sref="{{menu.sref}}"><i class="fa fa-fw {{menu.icon}}"></i> {{menu.name}}</a>
+    <div ng-if="!menu.isLeaf" class="title" ng-click="toggle()">{{menu.name}}</div>
+    <div ng-if="!menu.isLeaf" class="body" ng-show="showMe">
+        <ul class="sidebar-menu">
+            <li ng-repeat="subMenuItem in menu.subMenu"  ui-sref-active="active" >
+                <a class="ng-binding" href="" ui-sref="{{subMenuItem.sref}}"><i class="fa fa-fw {{subMenuItem.icon}}"></i> {{subMenuItem.name}}</a>
+            </li>
+        </ul>
+    </div>
+</div>
