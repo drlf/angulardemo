@@ -1,0 +1,20 @@
+<link rel="stylesheet" href="lib/mathquill-0.10.1/mathquill.css"/>
+<script src="../../libs/jquery.js"></script>
+<script src="lib/mathquill-0.10.1/mathquill.js"></script>
+ 
+<p>
+  Solve <span id="problem">ax^2 + bx + c = 0</span>:
+  <span id="answer">x=</span>
+</p>
+ 
+<script>
+  var MQ = MathQuill.getInterface(2);
+  MQ.StaticMath($('#problem')[0]);
+  var answer = MQ.MathField($('#answer')[0], {
+    handlers: {
+      edit: function() {
+        checkAnswer(answer.latex());
+      }
+    }
+  });
+</script>

@@ -1,0 +1,24 @@
+
+<body ng-app="demoApp">
+<pre>
+目的
+	测试angular是否可带多个run
+结果
+	可以
+</pre>
+</body>
+
+<script src="http://cdn.bootcss.com/angular.js/1.5.7/angular.min.js"></script>
+ 
+<script>
+angular
+.module('demoApp',[])
+.run(function(){
+	console.log('run1.....');
+}).run(function(){
+	console.log('run2.....');
+})
+.run(function(){
+	console.log('run3.....');
+});
+</script>
